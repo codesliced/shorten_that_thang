@@ -1,7 +1,11 @@
 
 get '/' do
-  @urls = Url.all
   erb :index
+end
+
+get '/all' do
+  @urls = Url.all
+  erb :list_of_urls
 end
 
 get '/:short_url' do
@@ -12,14 +16,13 @@ get '/:short_url' do
   redirect long_url
 end
 
-
 post '/urls' do
   Url.create(
     long_url: params[:user_input],
     short_url: Url.random_phrase(6), 
     click_count: 0)
   @urls = Url.all
-  erb :index
+  redirect '/all'
 end
 
 delete '/:short_url' do
